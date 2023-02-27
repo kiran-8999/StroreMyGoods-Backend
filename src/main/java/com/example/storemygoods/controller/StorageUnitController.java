@@ -16,8 +16,6 @@ import java.util.HashMap;
 public class StorageUnitController {
     @Autowired
     private IStorageUnitService unitService;
-
-
     @GetMapping("/units")
     private ResponseEntity<?> allUsers() {
         HashMap<String, String> res = new HashMap<>();
@@ -57,9 +55,6 @@ public class StorageUnitController {
         HashMap<String, String> res = new HashMap<>();
         try {
             StorageUnit u = unitService.getById(id);
-            u.setUserName(unit.getUserName());
-            u.setEmail(unit.getEmail());
-            u.setContactNumber(unit.getContactNumber());
             return new ResponseEntity<>(unitService.update(u), HttpStatus.OK);
         } catch (Exception e) {
             res.put("msg", e.getMessage());

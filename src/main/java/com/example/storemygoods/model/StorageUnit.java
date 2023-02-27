@@ -12,10 +12,8 @@ import lombok.*;
 public class StorageUnit {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String userName;
-    private String email;
-    private String contactNumber;
-    private String pickUpArea;
-    private String reason;
-    private String referFrom;
+    private String type;
+    private Integer sqFeet;
+    private Integer price;
+    private String about;
 }
