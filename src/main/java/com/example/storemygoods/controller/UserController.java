@@ -49,6 +49,65 @@ public class UserController {
     }
 
 
+    @PostMapping("/register")
+    private ResponseEntity<?> register(String name, String email, String password, String address) {
+        HashMap<String, String> res = new HashMap<>();
+        try {
+
+            User user = User.builder()
+                    .name(name)
+                    .email(email)
+                    .password(password)
+                    .address(address)
+                    .build();
+            if (email.equals("") && name.equals("") && password.equals("") && address.equals("")) {
+                res.put("msg", "Please fill all the fields");
+                return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+            }
+            boolean checkUser = userService.getByEmail(email) != null;
+            if (checkUser) {
+                res.put("msg", "User already exists");
+                return new ResponseEntity<>(res, HttpStatus.ALREADY_REPORTED);
+            } else {
+                userService.add(user);
+                res.put("msg", "User registered successfully");
+                return new ResponseEntity<>(res, HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+            res.put("msg", e.getMessage());
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/login")
+    private ResponseEntity<?> login(@RequestBody User user) {
+        HashMap<String, String> res = new HashMap<>();
+        try {
+            if (user.getEmail().equals("") && user.getPassword().equals("")) {
+                res.put("msg", "please fill all the fields");
+                return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+            }
+            if (user.getEmail().equals("admin@gmail.com") && user.getPassword().equals("admin")) {
+                res.put("msg", "Admin login successfully");
+                return new ResponseEntity<>(res, HttpStatus.OK);
+            }
+            User checkUser = userService.getByEmail(user.getEmail());
+            if (checkUser== null){
+                res.put("msg","User not found");
+                return  new ResponseEntity<>(res,HttpStatus.BAD_REQUEST);
+            }else{
+                res.put("msg","user login successfully");
+                return  new ResponseEntity<>(res,HttpStatus.OK);
+            }
+
+        } catch (Exception e) {
+            res.put("msg", e.getMessage());
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     @GetMapping("/users")
     private ResponseEntity<?> allUsers() {
         HashMap<String, String> res = new HashMap<>();

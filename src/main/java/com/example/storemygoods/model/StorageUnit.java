@@ -15,10 +15,7 @@ public class StorageUnit {
     private String userName;
     private String email;
     private String contactNumber;
-    private String location;
-    private Integer size;
-    private String type;
-    private String rental;
-    private String file;
-
+    private String pickUpArea;
+    private String reason;
+    private String referFrom;
 }

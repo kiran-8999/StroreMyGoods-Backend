@@ -3,6 +3,6 @@
 ## Used Technologies
 ***
 - ### Backend  :  Java, Spring Boot
-- ### Frontend  :  ReactJs
+- ### Frontend  :  React Js
 - ### Database : MySql
 

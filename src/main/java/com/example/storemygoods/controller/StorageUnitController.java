@@ -60,10 +60,6 @@ public class StorageUnitController {
             u.setUserName(unit.getUserName());
             u.setEmail(unit.getEmail());
             u.setContactNumber(unit.getContactNumber());
-            u.setLocation(unit.getLocation());
-            u.setType(unit.getType());
-            u.setRental(unit.getRental());
-            u.setFile(unit.getFile());
             return new ResponseEntity<>(unitService.update(u), HttpStatus.OK);
         } catch (Exception e) {
             res.put("msg", e.getMessage());
