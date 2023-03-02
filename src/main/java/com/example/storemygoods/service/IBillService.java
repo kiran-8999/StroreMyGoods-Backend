@@ -12,4 +12,5 @@ public interface IBillService {
     void delete(Long id);
 
     List<Bill> getByUserName(String userName);
+    Bill getByUserEmail(String userEmail);
 }

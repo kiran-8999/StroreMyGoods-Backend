@@ -14,7 +14,12 @@ import lombok.*;
 @Data
 public class Renting {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private boolean longTermStorage = true;
+    private Long userId;
+    private String userEmail;
+    private Long storageId;
+    private Integer price;
+    private String storageStatus;
+    private String typeOfStorage;
 }

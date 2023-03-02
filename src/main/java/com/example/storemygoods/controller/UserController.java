@@ -50,21 +50,15 @@ public class UserController {
 
 
     @PostMapping("/register")
-    private ResponseEntity<?> register(String name, String email, String password, String address) {
+    private ResponseEntity<?> register(@RequestBody User user) {
         HashMap<String, String> res = new HashMap<>();
         try {
 
-            User user = User.builder()
-                    .name(name)
-                    .email(email)
-                    .password(password)
-                    .address(address)
-                    .build();
-            if (email.equals("") && name.equals("") && password.equals("") && address.equals("")) {
+            if (user.getEmail().equals("") && user.getFirstName().equals("") && user.getLastName().equals("") && user.getPassword().equals("") && user.getAddress().equals("")) {
                 res.put("msg", "Please fill all the fields");
                 return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
             }
-            boolean checkUser = userService.getByEmail(email) != null;
+            boolean checkUser = userService.getByEmail(user.getEmail()) != null;
             if (checkUser) {
                 res.put("msg", "User already exists");
                 return new ResponseEntity<>(res, HttpStatus.ALREADY_REPORTED);
@@ -120,6 +114,7 @@ public class UserController {
     }
 
 
+
     @GetMapping("/users/{id}")
     private ResponseEntity<?> getById(@PathVariable Long id) {
         HashMap<String, String> res = new HashMap<>();
@@ -128,6 +123,15 @@ public class UserController {
         } catch (Exception e) {
             res.put("msg", e.getMessage());
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/user/{email}")
+    private  ResponseEntity<?> getByEmail(@PathVariable String email){
+        HashMap<String ,String > res=new HashMap<>();
+        try{
+            return new ResponseEntity<>(userService.getByEmail(email),HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -146,12 +150,8 @@ public class UserController {
     private ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable Long id) {
         HashMap<String, String> res = new HashMap<>();
         try {
-            User u = userService.getById(id);
-            u.setName(user.getName());
-            u.setEmail(user.getEmail());
-            u.setPassword(user.getPassword());
-            u.setAddress(user.getAddress());
-            return new ResponseEntity<>(userService.update(u), HttpStatus.OK);
+
+            return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
         } catch (Exception e) {
             res.put("msg", e.getMessage());
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);

@@ -18,9 +18,13 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String userName;
+    private Long rentingId;
+    private String userEmail;
     private String billType;
-    private Integer amount;
-    private LocalDate date;
+    private Integer price;
+    private String time;
+    private LocalDate date=LocalDate.now();
     private String status = "Pending Amount";
+    private String endDate;
 
 }

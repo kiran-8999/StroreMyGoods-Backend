@@ -54,8 +54,8 @@ public class StorageUnitController {
     private ResponseEntity<?> updateUser(@RequestBody StorageUnit unit, @PathVariable Long id) {
         HashMap<String, String> res = new HashMap<>();
         try {
-            StorageUnit u = unitService.getById(id);
-            return new ResponseEntity<>(unitService.update(u), HttpStatus.OK);
+//            StorageUnit u = unitService.getById(id);
+            return new ResponseEntity<>(unitService.update(unit), HttpStatus.OK);
         } catch (Exception e) {
             res.put("msg", e.getMessage());
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);

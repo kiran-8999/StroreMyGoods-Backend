@@ -42,6 +42,16 @@ public class BillController {
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/bill/{userEmail}")
+    private ResponseEntity<?> getByUserEmail(@PathVariable String userEmail){
+        HashMap<String,String> res=new HashMap<>();
+        try {
+            return  new ResponseEntity<>(billService.getByUserEmail(userEmail),HttpStatus.OK);
+        }catch (Exception e){
+            res.put("msg", e.getMessage());
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping("/bills")
     private ResponseEntity<?> addUser(@RequestBody Bill user) {
@@ -71,7 +81,7 @@ public class BillController {
         HashMap<String, String> res = new HashMap<>();
         try {
             billService.delete(id);
-            res.put("msg", "User deleted successfully");
+            res.put("msg", "Bill deleted successfully");
             return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
             res.put("msg", e.getMessage());

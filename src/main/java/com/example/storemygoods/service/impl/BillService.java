@@ -43,4 +43,10 @@ public class BillService implements IBillService {
     public List<Bill> getByUserName(String userName) {
         return billRepository.findByUserNameIgnoreCase(userName);
     }
+
+    @Override
+    public Bill getByUserEmail(String userEmail) {
+        return billRepository.findByUserEmail(userEmail);
+    }
+
 }

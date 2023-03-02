@@ -16,4 +16,5 @@ public class StorageUnit {
     private Integer sqFeet;
     private Integer price;
     private String about;
+    private String status="notBooked";
 }

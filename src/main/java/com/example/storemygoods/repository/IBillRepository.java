@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface IBillRepository extends JpaRepository<Bill, Long> {
     List<Bill> findByUserNameIgnoreCase(String userName);
+    Bill findByUserEmail(String userEmail);
 }

@@ -55,8 +55,7 @@ public class RentingController {
     private ResponseEntity<?> updateUser(@RequestBody Renting user, @PathVariable Long id) {
         HashMap<String, String> res = new HashMap<>();
         try {
-            Renting u = rentingService.getById(id);
-            return new ResponseEntity<>(rentingService.update(u), HttpStatus.OK);
+            return new ResponseEntity<>(rentingService.update(user), HttpStatus.OK);
         } catch (Exception e) {
             res.put("msg", e.getMessage());
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
