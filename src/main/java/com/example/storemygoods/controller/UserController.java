@@ -25,7 +25,7 @@ public class UserController {
     private IBillService billService;
 
     @Value("BILL_DUE_DAYS")
-    private static final int BILL_DUE_DAYS = 0;
+    private static final int BILL_DUE_DAYS = 30;
 
     @GetMapping("/remind")
     private ResponseEntity<?> payRemind(String userName) {
@@ -45,6 +45,23 @@ public class UserController {
         } catch (Exception e) {
             res.put("msg", e.getMessage());
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/reminder/{id}")
+    private ResponseEntity<?> reminder(@PathVariable Long id){
+        HashMap<String,String> res= new HashMap<>();
+        try{
+            Bill b=billService.getById(id);
+            List<Bill> dueBills = new ArrayList<>();
+            int currentDay=b.getDate().getDayOfYear();
+            int billDay=b.getEndDate().getDayOfYear();
+            if (billDay-currentDay >= BILL_DUE_DAYS){
+                dueBills.add(b);
+            }
+            return ResponseEntity.ok().body(dueBills);
+        }catch (Exception e){
+            res.put("msg",e.getMessage());
+            return new ResponseEntity<>(res,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

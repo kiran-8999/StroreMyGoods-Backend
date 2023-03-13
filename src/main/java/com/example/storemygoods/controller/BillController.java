@@ -3,6 +3,7 @@ package com.example.storemygoods.controller;
 import com.example.storemygoods.model.Bill;
 import com.example.storemygoods.model.User;
 import com.example.storemygoods.service.IBillService;
+import com.example.storemygoods.service.IUserService;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,6 +20,8 @@ import java.util.HashMap;
 public class BillController {
     @Autowired
     private IBillService billService;
+    @Autowired
+    private IUserService userService;
 
     @GetMapping("/bills")
     private ResponseEntity<?> allUsers() {
@@ -42,11 +45,28 @@ public class BillController {
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
     @GetMapping("/bill/{userEmail}")
-    private ResponseEntity<?> getByUserEmail(@PathVariable String userEmail){
-        HashMap<String,String> res=new HashMap<>();
+    private ResponseEntity<?> getByUserEmail(@PathVariable String userEmail) {
+        HashMap<String, String> res = new HashMap<>();
         try {
-            return  new ResponseEntity<>(billService.getByUserEmail(userEmail),HttpStatus.OK);
+            Bill b = billService.getByUserEmail(userEmail);
+            return new ResponseEntity<>(billService.all().stream().filter(i -> i.getId().equals(b.getUserEmail())), HttpStatus.OK);
+//            return new ResponseEntity<>(billService.getByUserEmail(userEmail),HttpStatus.OK);
+        } catch (Exception e) {
+            res.put("msg", e.getMessage());
+            return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/addBills/{email}/{id}")
+    private ResponseEntity<?> addBills(@PathVariable String email, @PathVariable Long id) {
+        HashMap<String, String> res = new HashMap<>();
+        try {
+            User u = userService.getByEmail(email);
+            Bill b= billService.getById(id);
+            u.getBills().add(b);
+            return  new ResponseEntity<>(userService.update(u),HttpStatus.OK);
         }catch (Exception e){
             res.put("msg", e.getMessage());
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -65,11 +85,11 @@ public class BillController {
     }
 
     @PatchMapping("/bills/{id}")
-    private ResponseEntity<?> updateUser( @PathVariable Long id) {
+    private ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody Bill bill) {
         HashMap<String, String> res = new HashMap<>();
         try {
-            Bill u = billService.getById(id);
-            return new ResponseEntity<>(billService.update(u), HttpStatus.OK);
+//            Bill u = billService.getById(id);
+            return new ResponseEntity<>(billService.update(bill), HttpStatus.OK);
         } catch (Exception e) {
             res.put("msg", e.getMessage());
             return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);

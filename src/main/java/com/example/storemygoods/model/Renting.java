@@ -22,4 +22,6 @@ public class Renting {
     private Integer price;
     private String storageStatus;
     private String typeOfStorage;
+    
+    
 }
